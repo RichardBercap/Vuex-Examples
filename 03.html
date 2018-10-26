@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Example with vuex</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+<body>
+  <h5 class="text-center text-prumary">(Very Simple Example)</h5>
+  <hr>
+  <div id="app">
+    <section class="container">
+      <router-link to="/first-app" class="btn">First</router-link>
+      <router-link to="/second-app" class="btn">Second</router-link>
+    </section>
+
+
+     <router-view></router-view>
+  </div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.js" charset="utf-8"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script>
+    // configuring the store
+    const store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      mutations: {
+        increment (state) {
+          state.count++
+        }
+      },
+      getters:{
+        total_count:state =>{
+          return state.count;
+        }
+      }
+    });
+    const app1 = Vue.component('first-app',{
+      data:function(){
+        return {
+          title:'This is the First App',
+          count:store.state.count
+        }
+      },
+      template:`<div class="container">
+        <h1 class="text-center">{{title}}</h1>
+        <h5 class="text-center">{{count}}</h5>
+      </div>`
+    });
+
+    const app2 = Vue.component('first-app',{
+      data:function(){
+        return {
+          title:'This is the Second App',
+          count: store.state.count
+        }
+      },
+      methods:{
+          add:function(){
+            this.count++;
+          }
+      },
+      template:`<div class="container">
+        <h1 class="text-center">{{title}}</h1>
+        <section class="panel">
+          <p>This value is manage from a store with vuex: {{count}}</p> <button class="btn" @click="add">+</button>
+        </section>
+      </div>`
+    });
+
+    // define the routing
+    const routes = [
+      { path: '/first-app', component: app1 },
+      { path: '/second-app', component: app2 }
+    ];
+    const router = new VueRouter({
+      routes // short for `routes: routes`
+    });
+
+
+    new Vue({el:"#app",router})
+  </script>
+</body>
+</html>

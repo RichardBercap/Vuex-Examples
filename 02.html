@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Vuex</title>
+</head>
+<body>
+    <div id="app">
+        
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.1/vuex.min.js"></script>
+<script>
+// vuex nos ofrece un arbol de estados llamado store para controlar todos los datos
+// y manipularlos en los componentes y comunicarlo entre ellos
+    const store = new Vuex.Store({
+      state: {
+        count: 0,
+        name:"Richard"
+      },
+      mutations: {
+        increment (state) {
+          state.count++
+        }
+      }
+    })
+    
+    // create a component
+    const Counter = {
+      template: `<div>{{ count }} {{getName()}}</div>`,
+      computed: {
+        count () {
+          return store.state.count
+        }   
+      },
+    methods:{
+            getName(){
+                return this.$store.state.name;
+            }    
+        }
+    }
+    const app = new Vue({
+      el: '#app',
+      // provide the store using the "store" option.
+      // this will inject the store instance to all child components.
+      store,
+      components: { Counter },
+      template: `
+        <div class="app">
+          <counter></counter>
+        </div>
+      `
+    })
+    store.commit('increment');
+    console.log(store.state.count);
+</script>
+</body>
+</html>
